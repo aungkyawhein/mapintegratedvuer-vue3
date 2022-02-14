@@ -30,7 +30,7 @@
 import EventBus from './EventBus';
 import DatasetHeader from './DatasetHeader';
 import IframeVuer from './Iframe';
-import {getAvailableTermsForSpecies} from './SimulatedData.js';
+//import {getAvailableTermsForSpecies} from './SimulatedData.js';
 import { FlatmapVuer, MultiFlatmapVuer } from '@abi-software/flatmapvuer/src/components/index.js';
 import { ScaffoldVuer } from '@abi-software/scaffoldvuer/src/components/index.js';
 import { PlotVuer } from '@abi-software/plotvuer';
@@ -86,7 +86,7 @@ export default {
         EventBus.$emit("PopoverActionClick", resource);
         return;
       }
-
+      console.log(resource);
       let returnedAction = undefined;
       let action = "none";
       if (type == "MultiFlatmap" || type == "Flatmap") {
@@ -94,10 +94,26 @@ export default {
           if (resource.feature.type == "marker") {
             returnedAction = {};
             returnedAction.type = "Facet";
-            returnedAction.label = this.idNamePair[resource.feature.models];  
+            returnedAction.labels = this.idNamePair[resource.feature.models];  
           }
           else if (resource.feature.type == "feature") {
-            action = "scaffold";
+            if (resource.feature.kind) {
+              if (resource.feature.kind === "scaffold") {
+                returnedAction = {};
+                returnedAction.type = "Facet";
+                returnedAction.facets = [{facet: "Scaffold", term:'Experimental approach',
+                  facetPropPath: 'item.modalities.keyword'}];
+                returnedAction.searchTerm = resource.feature.label;
+              } else {
+                returnedAction = {};
+                returnedAction.type = "Facet";
+                returnedAction.facets = [{facet: "Computational modeling", term:'Experimental approach',
+                  facetPropPath: 'item.modalities.keyword'}];
+                returnedAction.searchTerm = "Garny & Hunter";
+              }
+            } else {
+              action = "scaffold";
+            }
           } 
         }
       } else if (type == "Scaffold"){
@@ -118,7 +134,10 @@ export default {
       this.$emit("flatmapChanged");
     },
     updateMarkers: function(component) {
-      let map = component.mapImp;
+      //let map = component.mapImp;
+      component.showMinimap(false);
+      component.showPathwaysDrawer(false);
+      /*
       map.clearMarkers();
       let params = [];
       if (this.apiLocation) {
@@ -153,6 +172,7 @@ export default {
           map.addMarker(terms[i].id, terms[i].type);
         }
       }
+      */
     },
     startHelp: function(id){
       if (this.entry.id === id && this.isInHelp === undefined){
