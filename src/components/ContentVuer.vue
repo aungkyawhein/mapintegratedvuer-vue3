@@ -30,7 +30,7 @@
 import EventBus from './EventBus';
 import DatasetHeader from './DatasetHeader';
 import IframeVuer from './Iframe';
-//import {getAvailableTermsForSpecies} from './SimulatedData.js';
+import {getAvailableTermsForSpecies} from './SimulatedData.js';
 import { FlatmapVuer, MultiFlatmapVuer } from '@abi-software/flatmapvuer/src/components/index.js';
 import { ScaffoldVuer } from '@abi-software/scaffoldvuer/src/components/index.js';
 import { PlotVuer } from '@abi-software/plotvuer';
@@ -134,45 +134,47 @@ export default {
       this.$emit("flatmapChanged");
     },
     updateMarkers: function(component) {
-      //let map = component.mapImp;
+      
       component.showMinimap(false);
       component.showPathwaysDrawer(false);
-      /*
-      map.clearMarkers();
-      let params = [];
-      if (this.apiLocation) {
-        store.state.settings.facets.species.forEach(e => {
-          params.push(encodeURIComponent('species') + '=' + encodeURIComponent(e));
-        });
-        if (this._controller) 
-          this._controller.abort();
-        this._controller = new AbortController();
-        let signal = this._controller.signal;
-        fetch(`${this.apiLocation}get-organ-curies?${params.join('&')}`, {signal})
-        .then((response) => response.json())
-        .then((data) => {
-          this._controller = undefined;
-          data.uberon.array.forEach((pair) => {
-            this.idNamePair[pair.id.toUpperCase()] = 
-              pair.name.charAt(0).toUpperCase() + pair.name.slice(1);
-            map.addMarker(pair.id.toUpperCase(), "simulation");
+
+      let map = component.mapImp;
+      if (map.describes === "Rattus") {
+        map.clearMarkers();
+        let params = [];
+        if (this.apiLocation) {
+          store.state.settings.facets.species.forEach(e => {
+            params.push(encodeURIComponent('species') + '=' + encodeURIComponent(e));
           });
-        })
-        .catch(err=> {
-          if (err.name !== 'AbortError') {
-            let terms = getAvailableTermsForSpecies(map.describes);
-            for (let i = 0; i < terms.length; i++) {
-              map.addMarker(terms[i].id, terms[i].type);
+          if (this._controller) 
+            this._controller.abort();
+          this._controller = new AbortController();
+          let signal = this._controller.signal;
+          fetch(`${this.apiLocation}get-organ-curies?${params.join('&')}`, {signal})
+          .then((response) => response.json())
+          .then((data) => {
+            this._controller = undefined;
+            data.uberon.array.forEach((pair) => {
+              this.idNamePair[pair.id.toUpperCase()] = 
+                pair.name.charAt(0).toUpperCase() + pair.name.slice(1);
+              map.addMarker(pair.id.toUpperCase(), "simulation");
+            });
+          })
+          .catch(err=> {
+            if (err.name !== 'AbortError') {
+              let terms = getAvailableTermsForSpecies(map.describes);
+              for (let i = 0; i < terms.length; i++) {
+                map.addMarker(terms[i].id, terms[i].type);
+              }
             }
+          });
+        } else {
+          let terms = getAvailableTermsForSpecies(map.describes);
+          for (let i = 0; i < terms.length; i++) {
+            map.addMarker(terms[i].id, terms[i].type);
           }
-        });
-      } else {
-        let terms = getAvailableTermsForSpecies(map.describes);
-        for (let i = 0; i < terms.length; i++) {
-          map.addMarker(terms[i].id, terms[i].type);
         }
       }
-      */
     },
     startHelp: function(id){
       if (this.entry.id === id && this.isInHelp === undefined){

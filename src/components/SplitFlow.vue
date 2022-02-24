@@ -59,17 +59,28 @@ var initialState = function() {
     zIndex: 1,
     showDialogIcons: false, 
     activeDockedId: 1,
-    currentCount: 1,
+    currentCount: 2,
     entries: [
+      {
+        resource: "Rat",
+        availableSpecies : {
+          "Rat":{taxo: "Rattus", displayWarning: true},
+        },
+        type: "MultiFlatmap",
+        zIndex:1,
+        id: 1,
+        state: undefined,
+        label: "Rat",
+        discoverId: undefined
+      },
       {
         resource: "Rat",
         availableSpecies : {
           "Digestive Tract":{taxo: "digestive tract", displayWarning: true},
         },
         type: "MultiFlatmap",
-        zIndex:1,
-        mode: "main",
-        id: 1,
+        zIndex:2,
+        id: 2,
         state: undefined,
         label: "",
         discoverId: undefined
@@ -300,8 +311,12 @@ export default {
       this.$refs.sideBar.close();
       setTimeout(() => {
         this.startUp = false;
+        let slot = store.getters["splitFlow/getFirstAvailableSlot"]();
+        store.commit("splitFlow/assignIdToSlot", {slot:slot, id: 2});
+        store.commit("splitFlow/updateActiveView", "2vertpanel");
       }, 2000);
     });
+
   },
   computed: {
     envVars: function() {
