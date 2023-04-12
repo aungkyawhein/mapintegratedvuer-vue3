@@ -1,4 +1,5 @@
 const nodeExternals = require('webpack-node-externals');
+const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 
 module.exports = {
   pluginOptions: {
@@ -24,6 +25,8 @@ module.exports = {
       //stylesheet can be avoided.
       config.externals =  [ nodeExternals({allowlist: [/^element-ui/, /^@abi-software/, /^physiomeportal/]}) ];
     }
+    config.plugins.push(new NodePolyfillPlugin());
+    config.resolve.fallback = { fs: false, tls: false, net: false, child_process: false};
   },
   css: {
     //Import variables into all stylesheets.
