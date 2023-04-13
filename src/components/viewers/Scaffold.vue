@@ -21,7 +21,7 @@
 <script>
 /* eslint-disable no-alert, no-console */
 import EventBus from "../EventBus";
-import { capitalise} from '../scripts/utilities.js';
+import { capitalise } from '../scripts/utilities.js';
 import { ScaffoldVuer } from "@abi-software/scaffoldvuer/src/components/index.js";
 import ContentMixin from "../../mixins/ContentMixin";
 import store from "../../store";

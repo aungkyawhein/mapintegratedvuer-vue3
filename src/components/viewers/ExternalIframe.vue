@@ -9,7 +9,7 @@
 import ContentMixin from "../../mixins/ContentMixin";
 
 export default {
-  name: "Iframe",
+  name: "ExternalIframe",
   mixins: [ ContentMixin ],
 };
 </script>

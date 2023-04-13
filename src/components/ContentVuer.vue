@@ -44,7 +44,7 @@ import Vue from "vue";
 import { Button } from "element-ui";
 import DatasetHeader from "./DatasetHeader";
 import Flatmap from "./viewers/Flatmap";
-import Iframe from "./viewers/Iframe";
+import ExternalIframe from "./viewers/ExternalIframe";
 import MultiFlatmap from "./viewers/MultiFlatmap";
 import Plot from "./viewers/Plot";
 import Scaffold from "./viewers/Scaffold";
@@ -72,7 +72,7 @@ export default {
   components: {
     DatasetHeader,
     Flatmap,
-    Iframe,
+    ExternalIframe,
     MultiFlatmap,
     Plot,
     Scaffold,
@@ -151,7 +151,7 @@ export default {
         case "Biolucida":
         case "Iframe":
         case "Segmentation":
-          return 'Iframe';
+          return 'ExternalIframe';
         default:
           return this.entry.type;
       }
